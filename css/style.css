@@ -4,29 +4,29 @@
 
 /* CSS Variables */
 :root {
-    --primary: #e17055;
-    --primary-dark: #d63031;
-    --primary-light: #fab1a0;
-    --secondary: #00b894;
-    --secondary-dark: #00a381;
-    --accent: #fdcb6e;
-    --accent-dark: #f9a825;
-    --purple: #6c5ce7;
-    --teal: #00cec9;
-    --bg: #f5f6fa;
+    --primary: #27ae60;
+    --primary-dark: #229954;
+    --primary-light: #52be80;
+    --secondary: #16a085;
+    --secondary-dark: #138d75;
+    --accent: #7dcea0;
+    --accent-dark: #58d68d;
+    --purple: #5dade2;
+    --teal: #48c9b0;
+    --bg: #e8f8f5;
     --card: #ffffff;
     --text: #2d3436;
     --text-light: #636e72;
-    --text-muted: #b2bec3;
-    --border: #dfe6e9;
+    --text-muted: #95a5a6;
+    --border: #d5dbdb;
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
     --radius: 16px;
     --radius-sm: 10px;
     --nav-height: 70px;
     --transition: all 0.3s ease;
-    --visited: #00b894;
-    --desired: #fdcb6e;
+    --visited: #27ae60;
+    --desired: #f39c12;
 }
 
 /* Reset */
@@ -47,6 +47,45 @@ body {
     min-height: 100vh;
     padding-top: var(--nav-height);
     overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.08;
+    background-image: 
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.24.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.26 (1).jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.26.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.27 (1).jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.27.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.28.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.31.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.32 (1).jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.32.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.34.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.35.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.36.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.39.jpeg'),
+        url('../img/WhatsApp Image 2026-03-02 at 17.37.43.jpeg');
+    background-size: 
+        18% auto, 18% auto, 18% auto, 18% auto,
+        18% auto, 18% auto, 18% auto, 18% auto,
+        18% auto, 18% auto, 18% auto, 18% auto,
+        18% auto, 18% auto;
+    background-position: 
+        0% 0%, 20% 0%, 40% 0%, 60% 0%, 80% 0%,
+        10% 33%, 30% 33%, 50% 33%, 70% 33%,
+        0% 66%, 25% 66%, 50% 66%, 75% 66%,
+        40% 100%;
+    background-repeat: no-repeat;
+    filter: grayscale(30%);
 }
 
 /* ==========================================
@@ -77,14 +116,9 @@ body {
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--primary);
-}
-
-.nav-brand i {
-    font-size: 1.6rem;
 }
 
 .brand-text {
