@@ -1,12 +1,13 @@
 # Júlia, Jan i les nostres coses 🌍
 
-Aplicació web personal per gestionar viatges, restaurants i pel·lícules!
+Aplicació web personal per gestionar viatges, restaurants, pel·lícules i plans!
 
 ## Característiques
 
 - **Mapa Mundial**: Mapa interactiu per marcar països visitats (verd) i desitjats (groc)
 - **Restaurants**: Afegir restaurants amb puntuació (1-5 estrelles) i comentaris
 - **Pel·lícules i Sèries**: Registre de pel·lícules i sèries amb puntuació i opinió
+- **Plans**: Activitats i plans que hem fet amb data, ubicació i descripció
 - **Persistència**: Totes les dades es guarden al núvol amb Firebase
 
 ## Configuració de Firebase (Requerit)
@@ -121,7 +122,8 @@ Web Julia/
 │   ├── app.js              # Lògica principal, navegació
 │   ├── map.js              # Mapa mundial interactiu
 │   ├── restaurants.js      # Gestió de restaurants
-│   └── movies.js           # Pel·lícules i sèries
+│   ├── movies.js           # Pel·lícules i sèries
+│   └── plans.js            # Plans i activitats
 └── README.md               # Aquest arxiu
 ```
 

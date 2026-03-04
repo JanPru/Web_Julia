@@ -33,6 +33,7 @@
             <li><a href="#map" class="nav-link" data-page="map"><i class="fas fa-map-marked-alt"></i> Mapa</a></li>
             <li><a href="#restaurants" class="nav-link" data-page="restaurants"><i class="fas fa-utensils"></i> Restaurants</a></li>
             <li><a href="#movies" class="nav-link" data-page="movies"><i class="fas fa-film"></i> Pel·lícules</a></li>
+            <li><a href="#plans" class="nav-link" data-page="plans"><i class="fas fa-calendar-check"></i> Plans</a></li>
         </ul>
     </nav>
 
@@ -60,6 +61,11 @@
                         <i class="fas fa-film"></i>
                         <h3>Pel·lícules i Sèries</h3>
                         <p>Què hem vist i què en pensem</p>
+                    </div>
+                    <div class="hero-card" onclick="navigateTo('plans')">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Plans</h3>
+                        <p>Activitats i plans que hem fet</p>
                     </div>
                 </div>
             </div>
@@ -119,7 +125,22 @@
             </div>
         </section>
 
-
+        <!-- ======== PLANS ======== -->
+        <section id="plans" class="page">
+            <div class="section-header">
+                <h2><i class="fas fa-calendar-check"></i> Plans</h2>
+                <button class="btn btn-primary" onclick="openPlanModal()">
+                    <i class="fas fa-plus"></i> Afegir Pla
+                </button>
+            </div>
+            <div id="plans-list" class="cards-grid">
+                <div class="empty-state" id="plans-empty">
+                    <i class="fas fa-calendar-check"></i>
+                    <p>Encara no has afegit cap pla.</p>
+                    <button class="btn btn-primary" onclick="openPlanModal()">Afegir el primer!</button>
+                </div>
+            </div>
+        </section>
 
     </main>
 
@@ -161,6 +182,7 @@
     <script src="js/map.js"></script>
     <script src="js/restaurants.js"></script>
     <script src="js/movies.js"></script>
+    <script src="js/plans.js"></script>
 
 </body>
 </html>

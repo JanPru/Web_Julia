@@ -133,9 +133,30 @@
         <h1>Júlia, Jan i les nostres coses</h1>
         <p class="subtitle">Escaneja el codi QR per accedir a la nostra web</p>
 
+        <!-- URL Input -->
+        <div style="margin-bottom: 1.5rem;">
+            <label for="url-input" style="display: block; margin-bottom: 0.5rem; color: #636e72; font-size: 0.9rem; font-weight: 600;">
+                URL de la teva web:
+            </label>
+            <input 
+                type="text" 
+                id="url-input" 
+                placeholder="https://el-teu-usuari.github.io/web-julia"
+                style="width: 100%; padding: 0.8rem; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 0.9rem; font-family: 'Courier New', monospace;"
+            >
+            <button 
+                onclick="generateQRCode()"
+                style="margin-top: 0.8rem; padding: 0.6rem 1.5rem; background: #00b894; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;"
+                onmouseover="this.style.background='#00a381'"
+                onmouseout="this.style.background='#00b894'"
+            >
+                🔄 Generar Codi QR
+            </button>
+        </div>
+
         <div id="qr-code"></div>
 
-        <div class="url-text" id="url-display">Carregant URL...</div>
+        <div class="url-text" id="url-display">Introdueix la URL de la teva web</div>
 
         <button class="print-button" onclick="window.print()">
             🖨️ Imprimir Codi QR
@@ -156,22 +177,67 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
     <script>
-        // Get the URL from the current page or use index.html
-        const currentUrl = window.location.href;
-        const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-        const webUrl = baseUrl + 'index.html';
+        let qrCode = null;
 
-        // Display URL
-        document.getElementById('url-display').textContent = webUrl;
+        function generateQRCode() {
+            const urlInput = document.getElementById('url-input');
+            const webUrl = urlInput.value.trim();
 
-        // Generate QR Code
-        new QRCode(document.getElementById('qr-code'), {
-            text: webUrl,
-            width: 256,
-            height: 256,
-            colorDark: "#2d3436",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+            if (!webUrl) {
+                alert('Introdueix una URL vàlida!');
+                return;
+            }
+
+            // Validate URL format
+            try {
+                new URL(webUrl);
+            } catch (e) {
+                alert('URL no vàlida. Ha de començar amb http:// o https://');
+                return;
+            }
+
+            // Clear previous QR code
+            const qrContainer = document.getElementById('qr-code');
+            qrContainer.innerHTML = '';
+
+            // Display URL
+            document.getElementById('url-display').textContent = webUrl;
+
+            // Generate QR Code
+            qrCode = new QRCode(qrContainer, {
+                text: webUrl,
+                width: 256,
+                height: 256,
+                colorDark: "#2d3436",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Try to detect GitHub Pages URL automatically
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlInput = document.getElementById('url-input');
+            
+            // Try to get URL from current location if deployed
+            const currentUrl = window.location.href;
+            
+            if (currentUrl.includes('github.io') || currentUrl.includes('netlify.app') || currentUrl.includes('vercel.app')) {
+                // We're deployed, use the index.html URL
+                const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+                const deployedUrl = baseUrl + 'index.html';
+                urlInput.value = deployedUrl;
+                generateQRCode();
+            } else {
+                // Default placeholder for GitHub Pages
+                urlInput.placeholder = 'https://el-teu-usuari.github.io/nom-repo/index.html';
+            }
+
+            // Generate QR on Enter key
+            urlInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    generateQRCode();
+                }
+            });
         });
     </script>
 

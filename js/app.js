@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initMap();
             initRestaurants();
             initMovies();
+            initPlans();
         });
     } else {
         console.warn("⚠ Firebase not configured. Please update js/firebase-config.js with your Firebase credentials.");
