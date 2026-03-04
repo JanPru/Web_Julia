@@ -3,6 +3,7 @@
 // ==========================================
 
 let restaurants = [];
+let restaurantSearchQuery = '';
 
 async function initRestaurants() {
     if (!isFirebaseConfigured()) return;
@@ -23,31 +24,76 @@ function renderRestaurants() {
     const container = document.getElementById('restaurants-list');
     const emptyState = document.getElementById('restaurants-empty');
 
-    if (restaurants.length === 0) {
-        container.innerHTML = '';
-        container.appendChild(emptyState);
-        emptyState.style.display = '';
+    // Filter restaurants by search query
+    let filteredRestaurants = restaurants;
+    if (restaurantSearchQuery) {
+        const query = restaurantSearchQuery.toLowerCase();
+        filteredRestaurants = restaurants.filter(r => 
+            (r.name && r.name.toLowerCase().includes(query)) ||
+            (r.location && r.location.toLowerCase().includes(query))
+        );
+    }
+
+    if (filteredRestaurants.length === 0) {
+        container.innerHTML = restaurantSearchQuery 
+            ? '<div class="empty-state"><i class="fas fa-search"></i><p>No s\'han trobat restaurants</p></div>'
+            : '';
+        if (!restaurantSearchQuery) {
+            container.appendChild(emptyState);
+            emptyState.style.display = '';
+        }
         return;
     }
 
-    container.innerHTML = restaurants.map(r => `
-        <div class="item-card" data-id="${r.id}">
-            <div class="card-header">
-                <span class="card-title">${escapeHtml(r.name)}</span>
-            </div>
-            ${r.location ? `<div style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.3rem"><i class="fas fa-map-marker-alt" style="color:var(--primary)"></i> ${escapeHtml(r.location)}</div>` : ''}
-            ${renderStars(r.rating)}
-            ${r.comment ? `<p class="card-comment">"${escapeHtml(r.comment)}"</p>` : ''}
-            <div class="card-actions">
-                <button class="btn-icon" onclick="editRestaurant('${r.id}')" title="Editar">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn-icon delete" onclick="deleteRestaurant('${r.id}')" title="Eliminar">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </div>
+    emptyState.style.display = 'none';
+
+    container.innerHTML = `
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Buscar restaurants per nom o ubicació..." 
+                value="${restaurantSearchQuery}"
+                oninput="searchRestaurants(this.value)"
+            >
+            ${restaurantSearchQuery ? `<button class="search-clear" onclick="clearRestaurantSearch()"><i class="fas fa-times"></i></button>` : ''}
         </div>
-    `).join('');
+        
+        <div class="cards-grid">
+            ${filteredRestaurants.map(r => `
+                <div class="item-card" data-id="${r.id}">
+                    <div class="gradient-header"></div>
+                    <div style="padding: 1.5rem;">
+                        <div class="card-header">
+                            <span class="card-title">${escapeHtml(r.name)}</span>
+                        </div>
+                        ${r.location ? `<div style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.5rem"><i class="fas fa-map-marker-alt" style="color:var(--primary)"></i> ${escapeHtml(r.location)}</div>` : ''}
+                        ${renderStars(r.rating)}
+                        ${r.comment ? `<p class="card-comment">"${escapeHtml(r.comment)}"</p>` : ''}
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="editRestaurant('${r.id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" onclick="deleteRestaurant('${r.id}')" title="Eliminar">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function searchRestaurants(query) {
+    restaurantSearchQuery = query;
+    renderRestaurants();
+}
+
+function clearRestaurantSearch() {
+    restaurantSearchQuery = '';
+    renderRestaurants();
 }
 
 function openRestaurantModal(editId = null) {

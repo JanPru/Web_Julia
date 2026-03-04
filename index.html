@@ -90,9 +90,6 @@
         <section id="restaurants" class="page">
             <div class="section-header">
                 <h2><i class="fas fa-utensils"></i> Restaurants</h2>
-                <button class="btn btn-primary" onclick="openRestaurantModal()">
-                    <i class="fas fa-plus"></i> Afegir Restaurant
-                </button>
             </div>
             <div id="restaurants-list" class="cards-grid">
                 <div class="empty-state" id="restaurants-empty">
@@ -101,6 +98,9 @@
                     <button class="btn btn-primary" onclick="openRestaurantModal()">Afegir el primer!</button>
                 </div>
             </div>
+            <button class="fab" onclick="openRestaurantModal()" title="Afegir Restaurant">
+                <i class="fas fa-plus"></i>
+            </button>
         </section>
 
         <!-- ======== MOVIES ======== -->
@@ -129,9 +129,6 @@
         <section id="plans" class="page">
             <div class="section-header">
                 <h2><i class="fas fa-calendar-check"></i> Plans</h2>
-                <button class="btn btn-primary" onclick="openPlanModal()">
-                    <i class="fas fa-plus"></i> Afegir Pla
-                </button>
             </div>
             <div id="plans-list" class="cards-grid">
                 <div class="empty-state" id="plans-empty">
@@ -140,6 +137,9 @@
                     <button class="btn btn-primary" onclick="openPlanModal()">Afegir el primer!</button>
                 </div>
             </div>
+            <button class="fab" onclick="openPlanModal()" title="Afegir Pla">
+                <i class="fas fa-plus"></i>
+            </button>
         </section>
 
     </main>
