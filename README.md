@@ -133,7 +133,7 @@ Web Julia/
 - **Firebase** (Firestore, Auth)
 - **Leaflet.js** (Mapa interactiu)
 - **Font Awesome** (Icones)
-- **Google Fonts** (Poppins, Dancing Script)
+- **Google Fonts** (Funnel Sans)
 
 ## Provar en Local
 

@@ -41,7 +41,7 @@ html {
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Funnel Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -88,8 +88,9 @@ body {
 }
 
 .brand-text {
-    font-family: 'Dancing Script', cursive;
+    font-family: 'Funnel Sans', sans-serif;
     font-size: 1.6rem;
+    font-weight: 700;
 }
 
 .nav-links {
@@ -196,8 +197,9 @@ body {
 }
 
 .hero-title {
-    font-family: 'Dancing Script', cursive;
+    font-family: 'Funnel Sans', sans-serif;
     font-size: 3.5rem;
+    font-weight: 800;
     color: var(--primary);
     margin-bottom: 0.5rem;
     animation: slideDown 0.6s ease;
@@ -374,7 +376,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Funnel Sans', sans-serif;
 }
 
 .popup-btns .btn-visited {
@@ -753,7 +755,7 @@ body {
     padding: 0.7rem 1.3rem;
     border: none;
     border-radius: var(--radius-sm);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Funnel Sans', sans-serif;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -895,7 +897,7 @@ body {
     padding: 0.7rem 1rem;
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Funnel Sans', sans-serif;
     font-size: 0.9rem;
     color: var(--text);
     background: var(--bg);
@@ -957,7 +959,7 @@ body {
     border: 2px solid var(--border);
     border-radius: 25px;
     background: transparent;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Funnel Sans', sans-serif;
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-light);
@@ -1343,5 +1345,5 @@ body {
 
 .leaflet-popup-content {
     margin: 12px 16px !important;
-    font-family: 'Poppins', sans-serif !important;
+    font-family: 'Funnel Sans', sans-serif !important;
 }
