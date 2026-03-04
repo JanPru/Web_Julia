@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codi QR - Júlia, Jan i les nostres coses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+            padding: 2rem;
+        }
+
+        .qr-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #e17055;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #636e72;
+            margin-bottom: 2rem;
+        }
+
+        #qr-code {
+            display: inline-block;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 3px solid #e17055;
+        }
+
+        .url-text {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f5f6fa;
+            border-radius: 10px;
+            word-break: break-all;
+            font-size: 0.9rem;
+            color: #2d3436;
+            font-family: 'Courier New', monospace;
+        }
+
+        .instructions {
+            margin-top: 2rem;
+            text-align: left;
+            color: #636e72;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .instructions h3 {
+            color: #e17055;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .instructions ul {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.4rem;
+        }
+
+        .print-button {
+            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            background: #e17055;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .print-button:hover {
+            background: #d63031;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(225, 112, 85, 0.3);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .qr-container {
+                box-shadow: none;
+                padding: 2rem;
+                max-width: 100%;
+            }
+
+            .print-button {
+                display: none;
+            }
+
+            .instructions {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="qr-container">
+        <h1>Júlia, Jan i les nostres coses</h1>
+        <p class="subtitle">Escaneja el codi QR per accedir a la nostra web</p>
+
+        <div id="qr-code"></div>
+
+        <div class="url-text" id="url-display">Carregant URL...</div>
+
+        <button class="print-button" onclick="window.print()">
+            🖨️ Imprimir Codi QR
+        </button>
+
+        <div class="instructions">
+            <h3>Com utilitzar el codi QR:</h3>
+            <ul>
+                <li>Obre la càmera del teu mòbil</li>
+                <li>Apunta al codi QR</li>
+                <li>Fes clic a la notificació que apareix</li>
+                <li>Gaudeix de la web! ❤️</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // Get the URL from the current page or use index.html
+        const currentUrl = window.location.href;
+        const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+        const webUrl = baseUrl + 'index.html';
+
+        // Display URL
+        document.getElementById('url-display').textContent = webUrl;
+
+        // Generate QR Code
+        new QRCode(document.getElementById('qr-code'), {
+            text: webUrl,
+            width: 256,
+            height: 256,
+            colorDark: "#2d3436",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    </script>
+
+</body>
+</html>

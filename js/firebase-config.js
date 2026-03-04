@@ -9,9 +9,8 @@
 // 3. Click "Add app" > Web (</>)
 // 4. Register your app and copy the config object
 // 5. Enable Firestore Database (Build > Firestore Database > Create database)
-// 6. Enable Storage (Build > Storage > Get started)
-// 7. Enable Anonymous Auth (Build > Authentication > Sign-in method > Anonymous > Enable)
-// 8. Paste your config values below
+// 6. Enable Anonymous Auth (Build > Authentication > Sign-in method > Anonymous > Enable)
+// 7. Paste your config values below
 
 const firebaseConfig = {
   apiKey: "AIzaSyBw-ycgrmTxDNufS4GGbj7W6TYQnLRUq2E",
@@ -28,7 +27,6 @@ firebase.initializeApp(firebaseConfig);
 
 // Initialize services
 const db = firebase.firestore();
-const storage = firebase.storage();
 const auth = firebase.auth();
 
 // Sign in anonymously for accessing Firebase services

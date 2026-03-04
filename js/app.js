@@ -52,17 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const hash = window.location.hash.replace('#', '') || 'home';
     navigateTo(hash);
 
-    // QR Code
-    generateQR();
-
     // Check Firebase configuration and init all modules
     if (isFirebaseConfigured()) {
         authReady.then(() => {
             initMap();
             initRestaurants();
             initMovies();
-            initSelfies();
-            initTrips();
         });
     } else {
         console.warn("⚠ Firebase not configured. Please update js/firebase-config.js with your Firebase credentials.");
@@ -71,27 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initMap();
     }
 });
-
-// ---- QR Code ----
-function generateQR() {
-    const qrContainer = document.getElementById('qr-code');
-    const qrUrl = document.getElementById('qr-url');
-    const url = window.location.href.split('#')[0];
-
-    if (qrUrl) qrUrl.textContent = url;
-
-    if (qrContainer && typeof QRCode !== 'undefined') {
-        qrContainer.innerHTML = '';
-        new QRCode(qrContainer, {
-            text: url,
-            width: 180,
-            height: 180,
-            colorDark: "#2d3436",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    }
-}
 
 // ---- Modal ----
 function openModal(content) {

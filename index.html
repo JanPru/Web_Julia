@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Món de la Julia</title>
+    <title>Júlia, Jan i les nostres coses</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -22,8 +22,8 @@
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-brand" onclick="navigateTo('home')" style="cursor:pointer">
-            <i class="fas fa-globe-americas"></i>
-            <span class="brand-text">El Món de la Julia</span>
+            <i class="fas fa-heart"></i>
+            <span class="brand-text">Júlia, Jan i les nostres coses</span>
         </div>
         <button class="nav-toggle" id="navToggle" aria-label="Obrir menú">
             <i class="fas fa-bars"></i>
@@ -33,8 +33,6 @@
             <li><a href="#map" class="nav-link" data-page="map"><i class="fas fa-map-marked-alt"></i> Mapa</a></li>
             <li><a href="#restaurants" class="nav-link" data-page="restaurants"><i class="fas fa-utensils"></i> Restaurants</a></li>
             <li><a href="#movies" class="nav-link" data-page="movies"><i class="fas fa-film"></i> Pel·lícules</a></li>
-            <li><a href="#selfies" class="nav-link" data-page="selfies"><i class="fas fa-camera"></i> Selfies</a></li>
-            <li><a href="#trips" class="nav-link" data-page="trips"><i class="fas fa-suitcase-rolling"></i> Viatges</a></li>
         </ul>
     </nav>
 
@@ -44,8 +42,8 @@
         <!-- ======== HOME ======== -->
         <section id="home" class="page active">
             <div class="hero">
-                <h1 class="hero-title">El Món de la Julia</h1>
-                <p class="hero-subtitle">El meu diari personal de viatges, restaurants, pel·lícules i molt més!</p>
+                <h1 class="hero-title">Júlia, Jan i les nostres coses</h1>
+                <p class="hero-subtitle">El nostre diari personal de viatges, restaurants, pel·lícules i molt més!</p>
 
                 <div class="hero-cards">
                     <div class="hero-card" onclick="navigateTo('map')">
@@ -56,29 +54,13 @@
                     <div class="hero-card" onclick="navigateTo('restaurants')">
                         <i class="fas fa-utensils"></i>
                         <h3>Restaurants</h3>
-                        <p>Els meus restaurants preferits</p>
+                        <p>Els nostres restaurants preferits</p>
                     </div>
                     <div class="hero-card" onclick="navigateTo('movies')">
                         <i class="fas fa-film"></i>
                         <h3>Pel·lícules i Sèries</h3>
-                        <p>Què he vist i què en penso</p>
+                        <p>Què hem vist i què en pensem</p>
                     </div>
-                    <div class="hero-card" onclick="navigateTo('selfies')">
-                        <i class="fas fa-camera"></i>
-                        <h3>Selfies</h3>
-                        <p>Les meves millors fotos</p>
-                    </div>
-                    <div class="hero-card" onclick="navigateTo('trips')">
-                        <i class="fas fa-suitcase-rolling"></i>
-                        <h3>Viatges</h3>
-                        <p>Fotos per ciutats</p>
-                    </div>
-                </div>
-
-                <div class="qr-section">
-                    <h3><i class="fas fa-qrcode"></i> Escaneja per accedir des del mòbil</h3>
-                    <div id="qr-code"></div>
-                    <p class="qr-url" id="qr-url"></p>
                 </div>
             </div>
         </section>
@@ -137,51 +119,7 @@
             </div>
         </section>
 
-        <!-- ======== SELFIES ======== -->
-        <section id="selfies" class="page">
-            <div class="section-header">
-                <h2><i class="fas fa-camera"></i> Selfies</h2>
-                <button class="btn btn-primary" onclick="openSelfieUpload()">
-                    <i class="fas fa-upload"></i> Pujar Foto
-                </button>
-            </div>
-            <div id="selfies-gallery" class="photo-grid">
-                <div class="empty-state" id="selfies-empty">
-                    <i class="fas fa-camera"></i>
-                    <p>Encara no has pujat cap selfie.</p>
-                    <button class="btn btn-primary" onclick="openSelfieUpload()">Pujar la primera!</button>
-                </div>
-            </div>
-        </section>
 
-        <!-- ======== TRIPS ======== -->
-        <section id="trips" class="page">
-            <div class="section-header">
-                <h2><i class="fas fa-suitcase-rolling"></i> Viatges</h2>
-                <button class="btn btn-primary" onclick="openTripModal()">
-                    <i class="fas fa-folder-plus"></i> Nova Ciutat
-                </button>
-            </div>
-            <div id="trips-folders" class="trips-grid">
-                <div class="empty-state" id="trips-empty">
-                    <i class="fas fa-suitcase-rolling"></i>
-                    <p>Encara no has creat cap carpeta de viatge.</p>
-                    <button class="btn btn-primary" onclick="openTripModal()">Crear la primera!</button>
-                </div>
-            </div>
-            <div id="trip-detail" class="trip-detail hidden">
-                <div class="trip-detail-header">
-                    <button class="btn btn-back" onclick="backToTrips()">
-                        <i class="fas fa-arrow-left"></i> Tornar
-                    </button>
-                    <h3 id="trip-city-name"></h3>
-                    <button class="btn btn-primary" onclick="openTripPhotoUpload()">
-                        <i class="fas fa-upload"></i> Pujar Fotos
-                    </button>
-                </div>
-                <div id="trip-photos" class="photo-grid"></div>
-            </div>
-        </section>
 
     </main>
 
@@ -208,21 +146,13 @@
         <p>Carregant...</p>
     </div>
 
-    <!-- Hidden file inputs -->
-    <input type="file" id="selfie-file-input" accept="image/*" multiple style="display:none" onchange="handleSelfieFiles(this.files)">
-    <input type="file" id="trip-file-input" accept="image/*" multiple style="display:none" onchange="handleTripFiles(this.files)">
-
     <!-- ==================== SCRIPTS ==================== -->
     <!-- Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <!-- QR Code -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
     <!-- Firebase SDKs (compat v10) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
     <!-- App Scripts -->
@@ -231,8 +161,6 @@
     <script src="js/map.js"></script>
     <script src="js/restaurants.js"></script>
     <script src="js/movies.js"></script>
-    <script src="js/selfies.js"></script>
-    <script src="js/trips.js"></script>
 
 </body>
 </html>
