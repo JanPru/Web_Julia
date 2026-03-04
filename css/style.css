@@ -516,6 +516,70 @@ body {
 }
 
 /* ==========================================
+   PLANS
+   ========================================== */
+.plan-card {
+    position: relative;
+    transition: var(--transition);
+}
+
+.plan-card.completed {
+    opacity: 0.7;
+}
+
+.plan-card.completed .card-title {
+    text-decoration: line-through;
+    color: var(--text-light);
+}
+
+.btn-toggle-status {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-toggle-status:hover {
+    background: var(--border);
+    color: var(--secondary);
+    transform: scale(1.1);
+}
+
+.plan-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 0.8rem;
+}
+
+.plan-status-badge.completed {
+    background: rgba(0, 184, 148, 0.12);
+    color: var(--secondary);
+}
+
+.plan-status-badge.pending {
+    background: rgba(253, 203, 110, 0.12);
+    color: var(--accent-dark);
+}
+
+.plan-status-badge i {
+    font-size: 0.9rem;
+}
+
+/* ==========================================
    PHOTO GRID (Selfies & Trips)
    ========================================== */
 .photo-grid {

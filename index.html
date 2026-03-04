@@ -33,7 +33,7 @@
             <li><a href="#map" class="nav-link" data-page="map"><i class="fas fa-map-marked-alt"></i> Mapa</a></li>
             <li><a href="#restaurants" class="nav-link" data-page="restaurants"><i class="fas fa-utensils"></i> Restaurants</a></li>
             <li><a href="#movies" class="nav-link" data-page="movies"><i class="fas fa-film"></i> Pel·lícules</a></li>
-            <li><a href="#plans" class="nav-link" data-page="plans"><i class="fas fa-calendar-check"></i> Plans</a></li>
+            <li><a href="#plans" class="nav-link" data-page="plans"><i class="fas fa-clipboard-list"></i> Plans</a></li>
         </ul>
     </nav>
 
@@ -44,7 +44,7 @@
         <section id="home" class="page active">
             <div class="hero">
                 <h1 class="hero-title">Júlia, Jan i les nostres coses</h1>
-                <p class="hero-subtitle">El nostre diari personal de viatges, restaurants, pel·lícules i molt més!</p>
+                <p class="hero-subtitle">El nostre diari personal de viatges, restaurants, pel·lícules, plans i molt més!</p>
 
                 <div class="hero-cards">
                     <div class="hero-card" onclick="navigateTo('map')">
@@ -63,9 +63,9 @@
                         <p>Què hem vist i què en pensem</p>
                     </div>
                     <div class="hero-card" onclick="navigateTo('plans')">
-                        <i class="fas fa-calendar-check"></i>
+                        <i class="fas fa-clipboard-list"></i>
                         <h3>Plans</h3>
-                        <p>Activitats i plans que hem fet</p>
+                        <p>Plans que hem fet i volem fer</p>
                     </div>
                 </div>
             </div>
@@ -128,19 +128,26 @@
         <!-- ======== PLANS ======== -->
         <section id="plans" class="page">
             <div class="section-header">
-                <h2><i class="fas fa-calendar-check"></i> Plans</h2>
+                <h2><i class="fas fa-clipboard-list"></i> Plans</h2>
                 <button class="btn btn-primary" onclick="openPlanModal()">
-                    <i class="fas fa-plus"></i> Afegir Pla
+                    <i class="fas fa-plus"></i> Afegir Plan
                 </button>
+            </div>
+            <div class="filter-tabs" id="planFilters">
+                <button class="filter-btn active" data-filter="all" onclick="filterPlans('all')">Tots</button>
+                <button class="filter-btn" data-filter="completed" onclick="filterPlans('completed')">Fets</button>
+                <button class="filter-btn" data-filter="pending" onclick="filterPlans('pending')">Pendents</button>
             </div>
             <div id="plans-list" class="cards-grid">
                 <div class="empty-state" id="plans-empty">
-                    <i class="fas fa-calendar-check"></i>
-                    <p>Encara no has afegit cap pla.</p>
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>Encara no heu afegit cap plan.</p>
                     <button class="btn btn-primary" onclick="openPlanModal()">Afegir el primer!</button>
                 </div>
             </div>
         </section>
+
+
 
     </main>
 

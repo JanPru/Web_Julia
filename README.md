@@ -7,7 +7,7 @@ Aplicació web personal per gestionar viatges, restaurants, pel·lícules i plan
 - **Mapa Mundial**: Mapa interactiu per marcar països visitats (verd) i desitjats (groc)
 - **Restaurants**: Afegir restaurants amb puntuació (1-5 estrelles) i comentaris
 - **Pel·lícules i Sèries**: Registre de pel·lícules i sèries amb puntuació i opinió
-- **Plans**: Activitats i plans que hem fet amb data, ubicació i descripció
+- **Plans**: Gestionar plans fets i pendents amb dates i descripcions
 - **Persistència**: Totes les dades es guarden al núvol amb Firebase
 
 ## Configuració de Firebase (Requerit)
