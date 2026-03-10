@@ -53,6 +53,7 @@ function renderMovies() {
                 </span>
             </div>
             ${m.genre ? `<div style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.3rem"><i class="fas fa-tag" style="color:var(--purple)"></i> ${escapeHtml(m.genre)}</div>` : ''}
+            ${m.finishedFirstTry ? `<div style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.3rem"><i class="fas fa-flag-checkered" style="color:var(--primary)"></i> Es va acabar a la primera? <strong>${m.finishedFirstTry === 'yes' ? 'Si' : 'No'}</strong></div>` : ''}
             ${renderStars(m.rating)}
             ${m.comment ? `<p class="card-comment">"${escapeHtml(m.comment)}"</p>` : ''}
             <div class="card-actions">
@@ -87,7 +88,7 @@ function openMovieModal(editId = null) {
         <form onsubmit="saveMovie(event, '${editId || ''}')">
             <div class="form-group">
                 <label for="m-title">Títol *</label>
-                <input type="text" id="m-title" placeholder="Ex: Breaking Bad" value="${isEdit ? escapeHtml(movie.title) : ''}" required>
+                <input type="text" id="m-title" placeholder="Ex: Les pelicules que es monta la julia" value="${isEdit ? escapeHtml(movie.title) : ''}" required>
             </div>
             <div class="form-group">
                 <label for="m-type">Tipus</label>
@@ -98,7 +99,14 @@ function openMovieModal(editId = null) {
             </div>
             <div class="form-group">
                 <label for="m-genre">Gènere</label>
-                <input type="text" id="m-genre" placeholder="Ex: Drama, Thriller" value="${isEdit ? escapeHtml(movie.genre || '') : ''}">
+                <input type="text" id="m-genre" placeholder="Ex: Drama (ets una dramatica)" value="${isEdit ? escapeHtml(movie.genre || '') : ''}">
+            </div>
+            <div class="form-group">
+                <label for="m-finished-first-try">Es va acabar a la primera?</label>
+                <select id="m-finished-first-try">
+                    <option value="yes" ${isEdit && movie.finishedFirstTry === 'yes' ? 'selected' : ''}>Si</option>
+                    <option value="no" ${isEdit && movie.finishedFirstTry === 'no' ? 'selected' : ''}>No</option>
+                </select>
             </div>
             <div class="form-group">
                 <label>Puntuació</label>
@@ -106,7 +114,7 @@ function openMovieModal(editId = null) {
             </div>
             <div class="form-group">
                 <label for="m-comment">Comentaris</label>
-                <textarea id="m-comment" placeholder="Què t'ha semblat? La recomanaries?">${isEdit ? escapeHtml(movie.comment || '') : ''}</textarea>
+                <textarea id="m-comment" placeholder="Ex: Es culpa de la julia que no l'haguem acabat">${isEdit ? escapeHtml(movie.comment || '') : ''}</textarea>
             </div>
             <div class="form-actions">
                 <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel·lar</button>
@@ -130,6 +138,7 @@ async function saveMovie(e, editId) {
     const title = document.getElementById('m-title').value.trim();
     const type = document.getElementById('m-type').value;
     const genre = document.getElementById('m-genre').value.trim();
+    const finishedFirstTry = document.getElementById('m-finished-first-try').value;
     const rating = getStarRating('m-rating');
     const comment = document.getElementById('m-comment').value.trim();
 
@@ -145,6 +154,7 @@ async function saveMovie(e, editId) {
         title,
         type,
         genre,
+        finishedFirstTry,
         rating,
         comment,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()

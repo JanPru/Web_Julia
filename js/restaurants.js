@@ -58,12 +58,12 @@ function openRestaurantModal(editId = null) {
         <h3>${isEdit ? 'Editar Restaurant' : 'Nou Restaurant'}</h3>
         <form onsubmit="saveRestaurant(event, '${editId || ''}')">
             <div class="form-group">
-                <label for="r-name">Nom del Restaurant *</label>
-                <input type="text" id="r-name" placeholder="Ex: La Boqueria" value="${isEdit ? escapeHtml(restaurant.name) : ''}" required>
+                <label for="r-name">Restaurant *</label>
+                <input type="text" id="r-name" placeholder="Ex: El cos del Jan" value="${isEdit ? escapeHtml(restaurant.name) : ''}" required>
             </div>
             <div class="form-group">
                 <label for="r-location">Ubicació</label>
-                <input type="text" id="r-location" placeholder="Ex: Barcelona, Espanya" value="${isEdit ? escapeHtml(restaurant.location || '') : ''}">
+                <input type="text" id="r-location" placeholder="Ex: El llit del Jan" value="${isEdit ? escapeHtml(restaurant.location || '') : ''}">
             </div>
             <div class="form-group">
                 <label>Puntuació</label>
@@ -71,7 +71,7 @@ function openRestaurantModal(editId = null) {
             </div>
             <div class="form-group">
                 <label for="r-comment">Comentaris</label>
-                <textarea id="r-comment" placeholder="Què t'ha semblat? Quin plat recomanaries?">${isEdit ? escapeHtml(restaurant.comment || '') : ''}</textarea>
+                <textarea id="r-comment" placeholder="Ex: El millor pene que he provat mai">${isEdit ? escapeHtml(restaurant.comment || '') : ''}</textarea>
             </div>
             <div class="form-actions">
                 <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel·lar</button>

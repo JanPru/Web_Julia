@@ -101,7 +101,7 @@ function openPlanModal(editId = null) {
         <form onsubmit="savePlan(event, '${editId || ''}')">
             <div class="form-group">
                 <label for="plan-title">Títol *</label>
-                <input type="text" id="plan-title" placeholder="Ex: Viatge a Islàndia" value="${isEdit ? escapeHtml(plan.title) : ''}" required>
+                <input type="text" id="plan-title" placeholder="Ex: Follar molt" value="${isEdit ? escapeHtml(plan.title) : ''}" required>
             </div>
             <div class="form-group">
                 <label for="plan-date">Data (opcional)</label>
@@ -109,7 +109,7 @@ function openPlanModal(editId = null) {
             </div>
             <div class="form-group">
                 <label for="plan-description">Descripció</label>
-                <textarea id="plan-description" placeholder="Detalls del plan...">${isEdit ? escapeHtml(plan.description || '') : ''}</textarea>
+                <textarea id="plan-description" placeholder="Ex: Moltes posicions provades :)">${isEdit ? escapeHtml(plan.description || '') : ''}</textarea>
             </div>
             <div class="form-group">
                 <label for="plan-status">Estat</label>
