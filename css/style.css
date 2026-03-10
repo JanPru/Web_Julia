@@ -59,32 +59,10 @@ body::before {
     height: 100%;
     z-index: -1;
     opacity: 0.08;
-    background-image: 
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.24.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.26 (1).jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.26.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.27 (1).jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.27.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.28.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.31.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.32 (1).jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.32.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.34.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.35.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.36.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.39.jpeg'),
-        url('../img/WhatsApp Image 2026-03-02 at 17.37.43.jpeg');
-    background-size: 
-        18% auto, 18% auto, 18% auto, 18% auto,
-        18% auto, 18% auto, 18% auto, 18% auto,
-        18% auto, 18% auto, 18% auto, 18% auto,
-        18% auto, 18% auto;
-    background-position: 
-        0% 0%, 20% 0%, 40% 0%, 60% 0%, 80% 0%,
-        10% 33%, 30% 33%, 50% 33%, 70% 33%,
-        0% 66%, 25% 66%, 50% 66%, 75% 66%,
-        40% 100%;
-    background-repeat: no-repeat;
+    background-image: url('../img/collage.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     filter: grayscale(30%);
 }
 
