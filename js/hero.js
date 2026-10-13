@@ -4,7 +4,8 @@
 // La foto es mostreja en una graella; cada píxel prou "viu" es converteix en un
 // petit traç horitzontal amb relleu (z). Al carregar, els traços surten d'un
 // núvol esfèric i s'ordenen fins a formar la foto. Es pot girar arrossegant i
-// el ratolí (o el dit) empeny les partícules.
+// el ratolí (o el dit) empeny les partícules. On passa el punter, els traços
+// s'aixequen i deixen veure la foto original a sota.
 
 const HERO_PHOTO = 'foto_inici.jpeg';
 const HERO_MODEL = { width: 560, height: 420, depthBase: 10, depthRange: 42 };
@@ -13,33 +14,27 @@ const HERO_CROP = {
     wide: { cx: 0.5, cy: 0.5, width: 560, height: 420 },
     narrow: { cx: 0.6, cy: 0.42, width: 460, height: 460 }
 };
-const HERO_RAMP = ['#2b0f05', '#8a2a0c', '#e0501e', '#ffa02e', '#ffe2b0'];
+const HERO_RAMP = ['#04140c', '#0e4d2b', '#27ae60', '#7dcea0', '#e8f8f5'];
 const HERO_BASE_TILT = 0.12;
 const HERO_SWAY = 0.2;
 const HERO_STAGGER = 0.45;
 
-const HERO_VS = `#version 300 es
-precision highp float;
-layout(location = 0) in vec2 aCorner;
-layout(location = 1) in vec3 aCloud;
-layout(location = 2) in vec3 aTarget;
-layout(location = 3) in vec2 aMeta;
-layout(location = 4) in vec3 aTravel;
+const HERO_REVEAL_COLS = 64;
+
+// Comú: transformació del model a pantalla i lectura del mapa de revelat
+const HERO_GLSL_COMMON = `
 uniform vec2 uView;
 uniform vec2 uCenter;
 uniform float uScale;
 uniform float uDist;
 uniform float uYaw;
 uniform float uTilt;
-uniform float uMix;
-uniform float uSpread;
-uniform float uDash;
-uniform float uWidth;
-uniform vec2 uPointer;
-uniform float uPush;
-out float vAcross;
-out float vTone;
-out float vDepth;
+uniform vec2 uPlane;
+uniform sampler2D uRevealMap;
+
+float revealAt(vec2 cardUv) {
+  return smoothstep(0.02, 0.7, texture(uRevealMap, vec2(cardUv.x, 1.0 - cardUv.y)).r);
+}
 
 vec3 rotate(vec3 p) {
   float cy = cos(uYaw), sy = sin(uYaw);
@@ -52,6 +47,26 @@ vec2 project(vec3 p) {
   float w = max((uDist - p.z * uScale) / uDist, 0.05);
   return uCenter + vec2(p.x, -p.y) * uScale / w;
 }
+`;
+
+const HERO_VS = `#version 300 es
+precision highp float;
+layout(location = 0) in vec2 aCorner;
+layout(location = 1) in vec3 aCloud;
+layout(location = 2) in vec3 aTarget;
+layout(location = 3) in vec2 aMeta;
+layout(location = 4) in vec3 aTravel;
+${HERO_GLSL_COMMON}
+uniform float uMix;
+uniform float uSpread;
+uniform float uDash;
+uniform float uWidth;
+uniform vec2 uPointer;
+uniform float uPush;
+out float vAcross;
+out float vTone;
+out float vDepth;
+out float vFade;
 
 void main() {
   float tone = aMeta.x;
@@ -61,6 +76,13 @@ void main() {
 
   vec3 c = mix(aCloud, aTarget, t) + aTravel * sin(3.14159265 * t);
   c *= 1.0 + uSpread * (0.08 + 0.24 * fract(seed * 7.13));
+
+  // On hi ha revelat, el traç s'aixeca, deriva una mica i s'esvaeix
+  float reveal = revealAt(aTarget.xy / uPlane + 0.5) * t;
+  float driftAngle = seed * 6.2831853;
+  c += vec3(cos(driftAngle), sin(driftAngle), 0.0) * reveal * (6.0 + seed * 10.0);
+  c.z += reveal * (30.0 + seed * 60.0);
+  vFade = 1.0 - smoothstep(0.15, 0.8, reveal);
 
   float halfLen = mix(0.7, uDash, t);
   vec3 a = rotate(c - vec3(halfLen, 0.0, 0.0));
@@ -96,6 +118,7 @@ precision highp float;
 in float vAcross;
 in float vTone;
 in float vDepth;
+in float vFade;
 uniform float uWidth;
 uniform float uAlpha;
 uniform vec3 uRamp[5];
@@ -111,9 +134,42 @@ vec3 ramp(float x) {
 
 void main() {
   float cov = clamp(uWidth - abs(vAcross) + 0.5, 0.0, 1.0);
-  float alpha = cov * uAlpha;
+  float alpha = cov * uAlpha * vFade;
   if (alpha <= 0.004) discard;
   outColor = vec4(ramp(0.25 + vTone * 0.6 + vDepth * 0.15), alpha);
+}`;
+
+// La foto original, en un pla darrere dels traços, visible només on hi ha revelat
+const HERO_PHOTO_VS = `#version 300 es
+precision highp float;
+layout(location = 0) in vec2 aCorner;
+${HERO_GLSL_COMMON}
+uniform float uPlaneZ;
+out vec2 vUv;
+
+void main() {
+  vUv = vec2(aCorner.x, aCorner.y * 0.5 + 0.5);
+  vec3 p = rotate(vec3((vUv - 0.5) * uPlane, uPlaneZ));
+  float w = max((uDist - p.z * uScale) / uDist, 0.05);
+  vec2 screen = uCenter + vec2(p.x, -p.y) * uScale / w;
+  vec2 s = screen / uView;
+  gl_Position = vec4(vec2(s.x * 2.0 - 1.0, 1.0 - s.y * 2.0) * w, 0.0, w);
+}`;
+
+const HERO_PHOTO_FS = `#version 300 es
+precision highp float;
+in vec2 vUv;
+uniform sampler2D uRevealMap;
+uniform sampler2D uPhoto;
+uniform float uAlpha;
+out vec4 outColor;
+
+void main() {
+  float reveal = smoothstep(0.02, 0.7, texture(uRevealMap, vec2(vUv.x, 1.0 - vUv.y)).r);
+  float vignette = 1.0 - smoothstep(0.72, 1.08, length(vUv * 2.0 - 1.0));
+  float alpha = reveal * vignette * uAlpha;
+  if (alpha <= 0.004) discard;
+  outColor = vec4(texture(uPhoto, vec2(vUv.x, 1.0 - vUv.y)).rgb, alpha);
 }`;
 
 // ---- Foto -> traços ----
@@ -122,21 +178,85 @@ function heroSmooth(e0, e1, x) {
     return t * t * (3 - 2 * t);
 }
 
-function heroSamplePhoto(img, cols, rows, crop) {
-    const canvas = document.createElement('canvas');
-    canvas.width = cols;
-    canvas.height = rows;
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-
-    // Retall "cover" a la proporció del model, centrat al punt d'interès
+// Retall "cover" a la proporció del model, centrat al punt d'interès
+function heroCropCanvas(img, crop, cols, rows) {
     const aspect = crop.width / crop.height;
     let sw = img.naturalWidth;
     let sh = img.naturalHeight;
     if (sw / sh > aspect) sw = sh * aspect; else sh = sw / aspect;
     const sx = Math.min(img.naturalWidth - sw, Math.max(0, crop.cx * img.naturalWidth - sw / 2));
     const sy = Math.min(img.naturalHeight - sh, Math.max(0, crop.cy * img.naturalHeight - sh / 2));
-    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cols, rows);
-    return ctx.getImageData(0, 0, cols, rows).data;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = cols;
+    canvas.height = rows;
+    canvas.getContext('2d', { willReadFrequently: true }).drawImage(img, sx, sy, sw, sh, 0, 0, cols, rows);
+    return canvas;
+}
+
+function heroSamplePhoto(img, cols, rows, crop) {
+    return heroCropCanvas(img, crop, cols, rows).getContext('2d').getImageData(0, 0, cols, rows).data;
+}
+
+// Mapa de revelat: densitat que creix sota el punter, s'escampa i s'esvaeix
+function heroRevealField(cols, rows) {
+    let density = new Float32Array(cols * rows);
+    let next = new Float32Array(cols * rows);
+    const texels = new Uint8Array(cols * rows);
+    let peak = 0;
+
+    return {
+        cols,
+        rows,
+        texels,
+        splat(u, v, dt) {
+            if (u < -0.2 || u > 1.2 || v < -0.2 || v > 1.2) return;
+            const cx = u * cols;
+            const cy = (1 - v) * rows;
+            const radius = cols * 0.09;
+            const inv = 1 / (radius * radius);
+            const rate = 1 - Math.exp(-7 * dt);
+            const y0 = Math.max(0, Math.floor(cy - radius * 2.2));
+            const y1 = Math.min(rows - 1, Math.ceil(cy + radius * 2.2));
+            const x0 = Math.max(0, Math.floor(cx - radius * 2.2));
+            const x1 = Math.min(cols - 1, Math.ceil(cx + radius * 2.2));
+            for (let y = y0; y <= y1; y++) {
+                for (let x = x0; x <= x1; x++) {
+                    const dx = x + 0.5 - cx;
+                    const dy = y + 0.5 - cy;
+                    const g = Math.exp(-(dx * dx + dy * dy) * inv);
+                    const i = y * cols + x;
+                    if (g > density[i]) density[i] += (g - density[i]) * rate;
+                }
+            }
+            peak = 1;
+        },
+        step(dt, holding) {
+            if (peak <= 0.002) return false;
+            const k = 2.2 * dt;
+            const decay = Math.exp(-(holding ? 0.9 : 2.4) * dt);
+            peak = 0;
+            for (let y = 0; y < rows; y++) {
+                const up = Math.max(0, y - 1) * cols;
+                const down = Math.min(rows - 1, y + 1) * cols;
+                for (let x = 0; x < cols; x++) {
+                    const i = y * cols + x;
+                    const sum = density[y * cols + Math.max(0, x - 1)] + density[y * cols + Math.min(cols - 1, x + 1)] +
+                        density[up + x] + density[down + x];
+                    const val = ((density[i] + k * sum) / (1 + 4 * k)) * decay;
+                    next[i] = val;
+                    if (val > peak) peak = val;
+                    texels[i] = val >= 1 ? 255 : (val * 255) | 0;
+                }
+            }
+            [density, next] = [next, density];
+            if (peak <= 0.002) {
+                density.fill(0);
+                texels.fill(0);
+            }
+            return true;
+        }
+    };
 }
 
 // Difuminat ràpid (3 passades de caixa ≈ gaussiana) per al contrast local
@@ -264,8 +384,10 @@ function initHeroCloud() {
     }
 
     let program;
+    let photoProgram;
     try {
         program = heroCompile(gl, HERO_VS, HERO_FS);
+        photoProgram = heroCompile(gl, HERO_PHOTO_VS, HERO_PHOTO_FS);
     } catch (err) {
         console.error("Hero shader error:", err);
         hero.classList.add('no-webgl');
@@ -273,9 +395,10 @@ function initHeroCloud() {
     }
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const uni = {};
-    ['uView', 'uCenter', 'uScale', 'uDist', 'uYaw', 'uTilt', 'uMix', 'uSpread', 'uDash', 'uWidth',
-        'uPointer', 'uPush', 'uAlpha', 'uRamp'].forEach(n => { uni[n] = gl.getUniformLocation(program, n); });
+    const uniforms = (prog, names) => Object.fromEntries(names.map(n => [n, gl.getUniformLocation(prog, n)]));
+    const common = ['uView', 'uCenter', 'uScale', 'uDist', 'uYaw', 'uTilt', 'uPlane', 'uRevealMap'];
+    const uni = uniforms(program, [...common, 'uMix', 'uSpread', 'uDash', 'uWidth', 'uPointer', 'uPush', 'uAlpha', 'uRamp']);
+    const photoUni = uniforms(photoProgram, [...common, 'uPlaneZ', 'uPhoto', 'uAlpha']);
 
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
@@ -299,7 +422,25 @@ function initHeroCloud() {
     const metaBuf = instanceAttr(3, 2);
     const travelBuf = instanceAttr(4, 3);
 
+    const makeTexture = (unit) => {
+        const tex = gl.createTexture();
+        gl.activeTexture(gl.TEXTURE0 + unit);
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        return tex;
+    };
+    const revealTex = makeTexture(0);
+    const photoTex = makeTexture(1);
+    let reveal = null;
+
+    gl.useProgram(photoProgram);
+    gl.uniform1i(photoUni.uRevealMap, 0);
+    gl.uniform1i(photoUni.uPhoto, 1);
     gl.useProgram(program);
+    gl.uniform1i(uni.uRevealMap, 0);
     gl.uniform3fv(uni.uRamp, HERO_RAMP.flatMap(hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)));
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -328,6 +469,8 @@ function initHeroCloud() {
         scale: 1,
         dpr: 1,
         model: HERO_CROP.wide,
+        curYaw: 0,
+        pointerIn: false,
         start: 0,
         last: 0,
         morphStart: null,
@@ -364,6 +507,45 @@ function initHeroCloud() {
         gl.bufferData(gl.ARRAY_BUFFER, travel, gl.STATIC_DRAW);
         state.count = n;
         state.dash = dash;
+    };
+
+    const setupReveal = (img, crop) => {
+        const rows = Math.round(HERO_REVEAL_COLS * crop.height / crop.width);
+        reveal = heroRevealField(HERO_REVEAL_COLS, rows);
+        gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, revealTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, reveal.cols, reveal.rows, 0, gl.RED, gl.UNSIGNED_BYTE, reveal.texels);
+
+        const photoW = Math.min(1024, img.naturalWidth);
+        const photo = heroCropCanvas(img, crop, photoW, Math.round(photoW * crop.height / crop.width));
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, photoTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, photo);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    };
+
+    // Punt de pantalla -> coordenades (0..1) sobre el pla de la foto, desfent la rotació i la perspectiva
+    const screenToPlane = (sx, sy) => {
+        const X = sx - state.center[0];
+        const Y = -(sy - state.center[1]);
+        const ct = Math.cos(state.tilt), st = Math.sin(state.tilt);
+        const cy = Math.cos(state.curYaw), sy2 = Math.sin(state.curYaw);
+        const at = (zr) => {
+            const w = (2400 - zr * state.scale) / 2400;
+            const px = X * w / state.scale;
+            const py = Y * w / state.scale;
+            const y = py * ct + zr * st;
+            const z = -py * st + zr * ct;
+            return [px * cy - z * sy2, y, px * sy2 + z * cy];
+        };
+        const a = at(0);
+        const b = at(1);
+        const dz = b[2] - a[2];
+        if (Math.abs(dz) < 1e-5) return null;
+        const m = at((HERO_MODEL.depthBase - a[2]) / dz);
+        return [m[0] / state.model.width + 0.5, m[1] / state.model.height + 0.5];
     };
 
     // ---- Layout ----
@@ -425,19 +607,43 @@ function initHeroCloud() {
         state.push += (pushTarget - state.push) * (1 - Math.exp(-rate * dt));
 
         state.spread += (state.spreadTarget - state.spread) * (1 - Math.exp(-4 * dt));
+        state.curYaw = state.yaw + sway + cloudSpin;
+
+        // Revelat de la foto sota el punter
+        if (reveal && dt > 0) {
+            if (state.pointerIn && state.mix >= 1) {
+                const uv = screenToPlane(state.pointer[0], state.pointer[1]);
+                if (uv) reveal.splat(uv[0], uv[1], dt);
+            }
+            if (reveal.step(dt, state.pointerIn)) {
+                gl.activeTexture(gl.TEXTURE0);
+                gl.bindTexture(gl.TEXTURE_2D, revealTex);
+                gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, reveal.cols, reveal.rows, gl.RED, gl.UNSIGNED_BYTE, reveal.texels);
+            }
+        }
 
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
+        const setCommon = (u) => {
+            gl.uniform2f(u.uView, state.view[0], state.view[1]);
+            gl.uniform2f(u.uCenter, state.center[0], state.center[1]);
+            gl.uniform1f(u.uScale, state.scale);
+            gl.uniform1f(u.uDist, 2400);
+            gl.uniform1f(u.uYaw, state.curYaw);
+            gl.uniform1f(u.uTilt, state.tilt);
+            gl.uniform2f(u.uPlane, state.model.width, state.model.height);
+        };
         if (state.count) {
-            gl.useProgram(program);
             gl.bindVertexArray(vao);
-            gl.uniform2f(uni.uView, state.view[0], state.view[1]);
-            gl.uniform2f(uni.uCenter, state.center[0], state.center[1]);
-            gl.uniform1f(uni.uScale, state.scale);
-            gl.uniform1f(uni.uDist, 2400);
-            gl.uniform1f(uni.uYaw, state.yaw + sway + cloudSpin);
-            gl.uniform1f(uni.uTilt, state.tilt);
+            gl.useProgram(photoProgram);
+            setCommon(photoUni);
+            gl.uniform1f(photoUni.uPlaneZ, HERO_MODEL.depthBase);
+            gl.uniform1f(photoUni.uAlpha, state.alpha * state.mix);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+            gl.useProgram(program);
+            setCommon(uni);
             gl.uniform1f(uni.uMix, state.mix);
             gl.uniform1f(uni.uSpread, state.spread);
             gl.uniform1f(uni.uDash, state.dash);
@@ -473,6 +679,7 @@ function initHeroCloud() {
 
     const feedPointer = (e) => {
         const p = local(e);
+        state.pointerIn = !e.target.closest('.hc-nav');
         if (state.lastPointer) {
             state.pointerTravel += Math.min(240, Math.hypot(p[0] - state.lastPointer[0], p[1] - state.lastPointer[1]));
         }
@@ -481,6 +688,7 @@ function initHeroCloud() {
     };
 
     const resetPointer = () => {
+        state.pointerIn = false;
         state.lastPointer = null;
         state.pointer = [-1e5, -1e5];
     };
@@ -545,6 +753,7 @@ function initHeroCloud() {
         const cols = small ? 200 : 270;
         const rows = Math.round(cols * crop.height / crop.width);
         state.model = crop;
+        setupReveal(img, crop);
         uploadParticles(heroBuildTargets(heroSamplePhoto(img, cols, rows, crop), cols, rows, crop));
         layout();
         state.start = performance.now() / 1000;

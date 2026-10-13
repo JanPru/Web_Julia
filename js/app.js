@@ -16,6 +16,9 @@ function navigateTo(page) {
         link.classList.toggle('active', link.dataset.page === page);
     });
 
+    // Hide the top bar on the home hero
+    document.body.classList.toggle('is-home', page === 'home');
+
     // Close mobile nav
     document.getElementById('navLinks').classList.remove('open');
 
