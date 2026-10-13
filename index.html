@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Júlia, Jan i les nostres coses</title>
 
     <!-- Google Fonts -->
@@ -89,17 +89,47 @@
         <section id="restaurants" class="page">
             <div class="section-header">
                 <h2><i class="fas fa-utensils"></i> Restaurants</h2>
-                <button class="btn btn-primary" onclick="openRestaurantModal()">
-                    <i class="fas fa-plus"></i> Afegir Restaurant
+                <button class="btn btn-primary rf-add" onclick="openRestaurantModal()" aria-label="Afegir restaurant">
+                    <i class="fas fa-plus"></i> <span>Afegir Restaurant</span>
                 </button>
             </div>
-            <div id="restaurants-list" class="cards-grid">
+            <div class="rf-toolbar">
+                <div class="rf-search">
+                    <i class="fas fa-search"></i>
+                    <input type="search" id="rSearch" placeholder="Cerca per nom, cuina, barri..." autocomplete="off">
+                </div>
+                <div class="rf-chips" id="rChips"></div>
+                <div class="rf-meta">
+                    <span id="rCount"></span>
+                    <label class="rf-sort">
+                        <i class="fas fa-arrow-down-wide-short"></i>
+                        <select id="rSort">
+                            <option value="recent">Més recents</option>
+                            <option value="rating">Millor valorats</option>
+                            <option value="near">A prop meu</option>
+                            <option value="name">Nom (A-Z)</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div id="restaurants-list" class="rf-list">
                 <div class="empty-state" id="restaurants-empty">
                     <i class="fas fa-utensils"></i>
                     <p>Encara no has afegit cap restaurant.</p>
                     <button class="btn btn-primary" onclick="openRestaurantModal()">Afegir el primer!</button>
                 </div>
             </div>
+            <div class="rf-map-wrap" id="rMapWrap">
+                <div id="restaurants-map"></div>
+                <span class="rf-map-note rf-hidden" id="rMapNote"></span>
+                <button class="rf-locate" onclick="locateMeOnRestaurantMap()" aria-label="La meva ubicació">
+                    <i class="fas fa-location-crosshairs"></i>
+                </button>
+                <div class="rf-map-card rf-hidden" id="rMapCard"></div>
+            </div>
+            <button class="rf-view-toggle" id="rViewToggle" onclick="toggleRestaurantView()">
+                <i class="fas fa-map"></i> Mapa
+            </button>
         </section>
 
         <!-- ======== MOVIES ======== -->

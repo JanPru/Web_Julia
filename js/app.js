@@ -69,7 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---- Modal ----
-function openModal(content) {
+function openModal(content, variant = '') {
+    document.getElementById('modal').className = 'modal' + (variant ? ' ' + variant : '');
     document.getElementById('modal-content').innerHTML = content;
     document.getElementById('modal-overlay').classList.remove('hidden');
     document.body.style.overflow = 'hidden';

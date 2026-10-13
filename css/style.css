@@ -1363,3 +1363,825 @@ body::before {
 .leaflet-interactive:focus {
     outline: none !important;
 }
+
+/* ==========================================
+   RESTAURANTS (estil TheFork)
+   ========================================== */
+.rf-hidden {
+    display: none !important;
+}
+
+#restaurants .section-header {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.rf-toolbar {
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 50;
+    margin: 0 -2rem 1rem;
+    padding: 0.6rem 2rem 0.4rem;
+    background: rgba(232, 248, 245, 0.92);
+    backdrop-filter: blur(10px);
+}
+
+.rf-search {
+    position: relative;
+}
+
+.rf-search i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.rf-search input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.6rem;
+    border: 2px solid var(--border);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--card);
+    outline: none;
+    transition: var(--transition);
+}
+
+.rf-search input:focus {
+    border-color: var(--primary);
+}
+
+.rf-chips {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.7rem 0 0.3rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.rf-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.rchip {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 36px;
+    padding: 0 0.95rem;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.rchip i {
+    font-size: 0.75rem;
+}
+
+.rchip.active {
+    background: var(--text);
+    border-color: var(--text);
+    color: white;
+}
+
+.rchip-sep {
+    flex-shrink: 0;
+    width: 1px;
+    margin: 6px 0.15rem;
+    background: var(--border);
+}
+
+.rf-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.rf-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text);
+}
+
+.rf-sort select {
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+}
+
+/* List */
+.rf-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    padding-bottom: 5rem;
+}
+
+#restaurants.map-mode .rf-list {
+    display: none;
+}
+
+.rcard {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.rcard:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.rcard:active {
+    transform: scale(0.98);
+}
+
+.rcard-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--bg);
+}
+
+.rcard-media.no-photo {
+    aspect-ratio: 16 / 5;
+}
+
+.rcard-media.no-photo .rphoto-placeholder {
+    font-size: 1.6rem;
+}
+
+.rcard-photo,
+.rdetail-photo,
+.rmapcard-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.rphoto-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent), var(--teal));
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 2.2rem;
+}
+
+.rcard-tag {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: white;
+    color: #e84393;
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.rcard-body {
+    padding: 0.9rem 1rem 1.1rem;
+}
+
+.rcard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.rcard-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+}
+
+.rcard-meta {
+    margin-top: 0.2rem;
+    font-size: 0.88rem;
+    color: var(--text-light);
+}
+
+.rcard-address {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.45rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    min-width: 0;
+}
+
+.rcard-address i {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.rcard-address span:first-of-type {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rcard-dist {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.rcard-comment {
+    margin-top: 0.6rem;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--text-light);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Rating badge (TheFork) */
+.rbadge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 1px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    background: var(--primary-dark);
+    color: white;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.rbadge small {
+    font-size: 0.7rem;
+    font-weight: 500;
+    opacity: 0.85;
+}
+
+.rbadge.mid {
+    background: var(--primary-light);
+}
+
+.rbadge.low {
+    background: var(--text-muted);
+}
+
+.rlist-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+}
+
+.rlist-empty i {
+    font-size: 2.5rem;
+    opacity: 0.4;
+    margin-bottom: 0.8rem;
+}
+
+.rlist-empty p {
+    margin-bottom: 1rem;
+}
+
+/* Map view */
+.rf-map-wrap {
+    display: none;
+    position: relative;
+    z-index: 0;
+    height: 70vh;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+#restaurants.map-mode .rf-map-wrap {
+    display: block;
+}
+
+#restaurants-map {
+    width: 100%;
+    height: 100%;
+}
+
+.rf-map-note {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1000;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: white;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    box-shadow: var(--shadow);
+}
+
+.rf-locate {
+    position: absolute;
+    right: 10px;
+    top: 90px;
+    z-index: 1000;
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    background: white;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.rpin-anchor {
+    background: none;
+    border: none;
+}
+
+.rpin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, calc(-100% - 7px));
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    background: var(--primary-dark);
+    color: white;
+    font-family: 'Funnel Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.15s ease;
+}
+
+.rpin::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom: 0;
+    border-top-color: inherit;
+    border-top-color: var(--primary-dark);
+}
+
+.rpin i {
+    font-size: 0.7rem;
+}
+
+.rpin.wishlist {
+    background: #e84393;
+}
+
+.rpin.wishlist::after {
+    border-top-color: #e84393;
+}
+
+.rpin.selected {
+    background: var(--text);
+    transform: translate(-50%, calc(-100% - 7px)) scale(1.2);
+}
+
+.rpin.selected::after {
+    border-top-color: var(--text);
+}
+
+.rf-map-card {
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    z-index: 1001;
+    animation: rSlideUp 0.25s ease;
+}
+
+.rmapcard {
+    display: flex;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.rmapcard-photo {
+    width: 110px;
+    height: auto;
+    min-height: 110px;
+    flex-shrink: 0;
+    font-size: 1.6rem;
+}
+
+.rmapcard-body {
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem 0.9rem;
+}
+
+.rmapcard-body .rcard-name {
+    font-size: 1rem;
+}
+
+.rmapcard-tag {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #e84393;
+}
+
+@keyframes rSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Floating list/map toggle */
+.rf-view-toggle {
+    position: fixed;
+    left: 50%;
+    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 900;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--text);
+    color: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.rf-view-toggle:active {
+    transform: translateX(-50%) scale(0.96);
+}
+
+/* Detail sheet */
+.modal.sheet {
+    padding: 1.5rem;
+}
+
+.modal.sheet .modal-close {
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.rdetail-media {
+    margin: -1.5rem -1.5rem 1rem;
+    aspect-ratio: 16 / 9;
+}
+
+.rdetail-media .rphoto-placeholder {
+    font-size: 3rem;
+}
+
+.rdetail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.rdetail-head h3 {
+    margin-bottom: 0;
+    font-size: 1.4rem;
+}
+
+.rdetail-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.7rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.rdetail-status.visited {
+    background: rgba(39, 174, 96, 0.12);
+    color: var(--primary-dark);
+}
+
+.rdetail-status.wishlist {
+    background: rgba(232, 67, 147, 0.12);
+    color: #e84393;
+}
+
+.rdetail .star-rating {
+    display: flex;
+}
+
+.rdetail-comment {
+    margin-top: 0.9rem;
+    padding: 0.8rem 1rem;
+    border-left: 3px solid var(--accent);
+    background: var(--bg);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-style: italic;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+.rdetail-map {
+    height: 150px;
+    margin-top: 1rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    z-index: 0;
+}
+
+.rdetail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+}
+
+.rdetail-actions > .btn {
+    justify-content: center;
+    padding: 0.85rem;
+    font-size: 1rem;
+}
+
+.rdetail-secondary {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.rdetail-secondary .btn {
+    flex: 1;
+    justify-content: center;
+}
+
+.rdetail-delete:hover {
+    background: rgba(192, 57, 43, 0.1);
+    color: #c0392b;
+}
+
+/* Form */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.segmented {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.segmented button {
+    flex: 1;
+    min-height: 42px;
+    padding: 0 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.segmented button.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+}
+
+.segmented.compact button {
+    flex: 0 0 auto;
+    padding: 0 0.55rem;
+}
+
+.rloc-search {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.rloc-search input {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-group .rloc-btn {
+    flex-shrink: 0;
+    width: 44px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--primary);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.rloc-results:not(:empty) {
+    margin-top: 0.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.rloc-result {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: white;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rloc-result:last-child {
+    border-bottom: none;
+}
+
+.rloc-result i {
+    margin-top: 0.2rem;
+    color: var(--primary);
+}
+
+.rloc-result strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.rloc-result small {
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+.rloc-loading {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.rform-map {
+    height: 180px;
+    margin-top: 0.5rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    z-index: 0;
+}
+
+.rphoto-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.rphoto-preview:not(:empty) {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.rphoto-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rphoto-btn {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .rf-toolbar {
+        margin: 0 -1rem 0.75rem;
+        padding: 0.5rem 1rem 0.3rem;
+    }
+
+    .rf-add {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.1rem;
+    }
+
+    .rf-add span {
+        display: none;
+    }
+
+    .rf-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    #restaurants.map-mode {
+        padding-bottom: 0;
+    }
+
+    .rf-map-wrap {
+        margin: 0 -1rem;
+        border-radius: 0;
+    }
+
+    /* Inputs >= 16px per evitar el zoom automàtic d'iOS */
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 16px;
+    }
+
+    /* Bottom sheet */
+    .modal-overlay:has(.modal.sheet) {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal.sheet {
+        margin: 0;
+        max-width: none;
+        max-height: 92vh;
+        max-height: 92dvh;
+        border-radius: 20px 20px 0 0;
+        padding: 1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+        animation: rSheetUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .modal.sheet .rdetail-media {
+        margin: -1.25rem -1.25rem 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .segmented.compact button {
+        flex: 1;
+    }
+}
+
+@keyframes rSheetUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
