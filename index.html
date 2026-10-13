@@ -6,7 +6,7 @@
     <title>Júlia, Jan i les nostres coses</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@300;400;500;600;700;800&family=Jacquard+12&family=DotGothic16&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -41,32 +41,44 @@
 
         <!-- ======== HOME ======== -->
         <section id="home" class="page active">
-            <div class="hero">
-                <h1 class="hero-title">Júlia, Jan i les nostres coses</h1>
-                <p class="hero-subtitle">El nostre diari personal de viatges, restaurants, pel·lícules, plans i molt més!</p>
-
-                <div class="hero-cards">
-                    <div class="hero-card" onclick="navigateTo('map')">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <h3>Mapa Mundial</h3>
-                        <p>On ens gastem els diners</p>
-                    </div>
-                    <div class="hero-card" onclick="navigateTo('restaurants')">
-                        <i class="fas fa-utensils"></i>
-                        <h3>Restaurants</h3>
-                        <p>Perque som dos foques</p>
-                    </div>
-                    <div class="hero-card" onclick="navigateTo('movies')">
-                        <i class="fas fa-film"></i>
-                        <h3>Pel·lícules i Sèries</h3>
-                        <p>A veure si aguantem...</p>
-                    </div>
-                    <div class="hero-card" onclick="navigateTo('plans')">
-                        <i class="fas fa-clipboard-list"></i>
-                        <h3>Plans</h3>
-                        <p>Perque el turisme de BCN no es fa sol</p>
-                    </div>
-                </div>
+            <div class="hero-cloud" id="heroCloud">
+                <canvas id="heroCanvas" aria-hidden="true"></canvas>
+                <img class="hc-fallback" src="foto_inici.jpeg" alt="La Júlia i en Jan">
+                <header class="hc-mast">
+                    <p class="hc-kicker">el nostre diari de coses</p>
+                    <h1 class="hc-name">Júlia &amp; Jan</h1>
+                </header>
+                <nav class="hc-nav" aria-label="Seccions">
+                    <button type="button" class="hc-item" data-go="map">
+                        <span class="hc-fig">01</span>
+                        <span class="hc-file">mapa.geo</span>
+                        <span class="hc-title">Mapa</span>
+                        <span class="hc-sub">On ens gastem els diners</span>
+                        <span class="hc-go">entrar ▸</span>
+                    </button>
+                    <button type="button" class="hc-item" data-go="restaurants">
+                        <span class="hc-fig">02</span>
+                        <span class="hc-file">foques.food</span>
+                        <span class="hc-title">Restaurants</span>
+                        <span class="hc-sub">Perquè som dos foques</span>
+                        <span class="hc-go">entrar ▸</span>
+                    </button>
+                    <button type="button" class="hc-item" data-go="movies">
+                        <span class="hc-fig">03</span>
+                        <span class="hc-file">sofa.mov</span>
+                        <span class="hc-title">Pel·lícules</span>
+                        <span class="hc-sub">A veure si aguantem...</span>
+                        <span class="hc-go">entrar ▸</span>
+                    </button>
+                    <button type="button" class="hc-item" data-go="plans">
+                        <span class="hc-fig">04</span>
+                        <span class="hc-file">plans.todo</span>
+                        <span class="hc-title">Plans</span>
+                        <span class="hc-sub">El turisme de BCN no es fa sol</span>
+                        <span class="hc-go">entrar ▸</span>
+                    </button>
+                </nav>
+                <p class="hc-hint" aria-hidden="true">arrossega per girar</p>
             </div>
         </section>
 
@@ -219,6 +231,7 @@
     <script src="js/restaurants.js"></script>
     <script src="js/movies.js"></script>
     <script src="js/plans.js"></script>
+    <script src="js/hero.js"></script>
 
 </body>
 </html>
