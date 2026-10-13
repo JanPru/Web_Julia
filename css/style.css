@@ -4,23 +4,29 @@
 
 /* CSS Variables */
 :root {
+    /* Tema fosc verd (el mateix que el hero d'Inici) */
     --primary: #27ae60;
-    --primary-dark: #229954;
+    --primary-dark: #1e8449;
     --primary-light: #52be80;
     --secondary: #16a085;
     --secondary-dark: #138d75;
     --accent: #7dcea0;
     --accent-dark: #58d68d;
-    --purple: #5dade2;
+    --purple: #7dcea0;
     --teal: #48c9b0;
-    --bg: #e8f8f5;
-    --card: #ffffff;
-    --text: #2d3436;
-    --text-light: #636e72;
-    --text-muted: #95a5a6;
-    --border: #d5dbdb;
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+    --bg: #06150d;
+    --card: #0b2116;
+    --card-raised: #10301f;
+    --glass: rgba(6, 21, 13, 0.86);
+    --text: #e8f8f5;
+    --text-light: #a9d9bd;
+    --text-muted: #5f8a72;
+    --border: #1d4630;
+    --on-accent: #06150d;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --font-ui: 'DotGothic16', monospace;
+    --font-display: 'Jacquard 12', serif;
     --radius: 16px;
     --radius-sm: 10px;
     --nav-height: 70px;
@@ -41,7 +47,7 @@ html {
 }
 
 body {
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -58,12 +64,12 @@ body::before {
     width: 100%;
     height: 100%;
     z-index: -1;
-    opacity: 0.08;
+    opacity: 0.07;
     background-image: url('../img/collage.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: grayscale(30%);
+    filter: grayscale(100%);
 }
 
 /* ==========================================
@@ -75,7 +81,7 @@ body::before {
     left: 0;
     right: 0;
     height: var(--nav-height);
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
@@ -94,15 +100,14 @@ body::before {
 .nav-brand {
     display: flex;
     align-items: center;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary);
+    color: var(--text);
 }
 
 .brand-text {
-    font-family: 'Funnel Sans', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1;
 }
 
 .nav-links {
@@ -113,26 +118,35 @@ body::before {
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-light);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: var(--accent);
+    padding: 0.4rem 0.9rem;
+    border-radius: 0;
+    font-size: 1rem;
+    font-weight: 400;
     transition: var(--transition);
     display: flex;
     align-items: center;
     gap: 0.4rem;
 }
 
-.nav-link:hover {
+.nav-fig {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1;
     color: var(--primary);
-    background: rgba(225, 112, 85, 0.08);
+}
+
+.nav-link:hover {
+    color: var(--text);
 }
 
 .nav-link.active {
-    color: var(--primary);
-    background: rgba(225, 112, 85, 0.12);
-    font-weight: 600;
+    color: var(--on-accent);
+    background: var(--accent);
+}
+
+.nav-link.active .nav-fig {
+    color: var(--on-accent);
 }
 
 .nav-toggle {
@@ -209,7 +223,7 @@ body::before {
 }
 
 .hero-title {
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
     font-size: 3.5rem;
     font-weight: 800;
     color: var(--primary);
@@ -388,7 +402,7 @@ body::before {
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
 }
 
 .popup-btns .btn-visited {
@@ -767,7 +781,7 @@ body::before {
     padding: 0.7rem 1.3rem;
     border: none;
     border-radius: var(--radius-sm);
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -909,7 +923,7 @@ body::before {
     padding: 0.7rem 1rem;
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.9rem;
     color: var(--text);
     background: var(--bg);
@@ -971,7 +985,7 @@ body::before {
     border: 2px solid var(--border);
     border-radius: 25px;
     background: transparent;
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-light);
@@ -1222,7 +1236,7 @@ body::before {
         top: var(--nav-height);
         left: 0;
         right: 0;
-        background: white;
+        background: var(--bg);
         flex-direction: column;
         padding: 1rem;
         border-bottom: 1px solid var(--border);
@@ -1357,7 +1371,7 @@ body::before {
 
 .leaflet-popup-content {
     margin: 12px 16px !important;
-    font-family: 'Funnel Sans', sans-serif !important;
+    font-family: var(--font-ui) !important;
 }
 
 .leaflet-interactive:focus {
@@ -1740,7 +1754,7 @@ body::before {
     border-radius: 999px;
     background: var(--primary-dark);
     color: white;
-    font-family: 'Funnel Sans', sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.85rem;
     font-weight: 700;
     white-space: nowrap;
@@ -2443,4 +2457,206 @@ body.is-home #navbar {
     .hc-fallback {
         width: calc(100% - 32px);
     }
+}
+
+/* ==========================================
+   TEMA FOSC: ajustos sobre colors fixos
+   ========================================== */
+.section-header h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    line-height: 1;
+}
+
+.section-header h2 i {
+    font-size: 0.55em;
+}
+
+#world-map {
+    background: #04110a;
+    border: 1px solid var(--border);
+}
+
+.popup-btns .btn-remove {
+    background: var(--card-raised);
+    color: var(--text-light);
+}
+
+.btn-back:hover {
+    background: var(--card-raised);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    background: var(--card-raised);
+    box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.15);
+}
+
+.form-group select option {
+    background: var(--card);
+    color: var(--text);
+}
+
+.star-rating i.far,
+.form-star-rating i {
+    color: var(--text-muted);
+}
+
+.form-star-rating i.active,
+.form-star-rating i:hover {
+    color: var(--accent);
+}
+
+.loading-overlay {
+    background: rgba(6, 21, 13, 0.85);
+    color: var(--text);
+}
+
+.modal {
+    border: 1px solid var(--border);
+}
+
+.modal-close:hover {
+    color: var(--text);
+    background: var(--card-raised);
+}
+
+.btn-ghost:hover {
+    background: var(--card-raised);
+}
+
+/* Restaurants */
+.rf-toolbar {
+    background: var(--glass);
+}
+
+.rf-search input {
+    background: var(--card);
+}
+
+.rchip {
+    background: var(--card);
+}
+
+.rchip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+}
+
+.rcard,
+.rmapcard {
+    border: 1px solid var(--border);
+}
+
+.rcard-tag,
+.rf-map-note {
+    background: var(--glass);
+}
+
+.rf-locate {
+    background: var(--card);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.rpin.selected {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.rpin.selected::after {
+    border-top-color: var(--accent);
+}
+
+.rf-view-toggle {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.modal.sheet .modal-close {
+    background: var(--glass);
+    color: var(--text);
+}
+
+.rloc-result {
+    background: var(--card);
+}
+
+.rloc-result:hover {
+    background: var(--card-raised);
+}
+
+.segmented button.active {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Leaflet en fosc */
+.leaflet-container {
+    background: #04110a;
+    font-family: var(--font-ui);
+}
+
+.rf-map-wrap .leaflet-tile-pane,
+.rdetail-map .leaflet-tile-pane,
+.rform-map .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(0.9) saturate(0.5);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    background: var(--card) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border);
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+    background: var(--card);
+    color: var(--text);
+    border-bottom-color: var(--border);
+}
+
+.leaflet-bar {
+    border-color: var(--border) !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(6, 21, 13, 0.7) !important;
+    color: var(--text-muted) !important;
+}
+
+.leaflet-control-attribution a {
+    color: var(--accent) !important;
+}
+
+.leaflet-tooltip {
+    background: var(--card);
+    color: var(--text);
+    border-color: var(--border);
+    font-family: var(--font-ui);
+}
+
+.leaflet-tooltip-top::before {
+    border-top-color: var(--card);
+}
+
+@media (max-width: 768px) {
+    .brand-text {
+        font-size: 1.9rem;
+    }
+}
+
+.rphoto-placeholder {
+    background: linear-gradient(135deg, #0e4d2b, #0b2116);
+    color: var(--accent);
+}
+
+.leaflet-bar a.leaflet-disabled {
+    background: var(--card);
+    color: var(--text-muted);
 }

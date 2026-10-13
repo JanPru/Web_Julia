@@ -29,6 +29,9 @@ function navigateTo(page) {
 
     // Update URL hash
     history.replaceState(null, '', '#' + page);
+
+    // Start each section at the top (also avoids the browser jumping to the #anchor)
+    window.scrollTo(0, 0);
 }
 
 // ---- Init on DOMContentLoaded ----
@@ -54,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle hash on load
     const hash = window.location.hash.replace('#', '') || 'home';
     navigateTo(hash);
+
+    // The browser jumps to the #anchor after load; keep the section at the top
+    history.scrollRestoration = 'manual';
+    window.addEventListener('load', () => window.scrollTo(0, 0));
 
     // Check Firebase configuration and init all modules
     if (isFirebaseConfigured()) {

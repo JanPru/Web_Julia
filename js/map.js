@@ -20,12 +20,7 @@ function initMap() {
         maxBoundsViscosity: 1.0
     });
 
-    // Tile layer (simple, light style)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
-    }).addTo(worldMap);
+    // Sense tessel·les de fons: només els països sobre el verd fosc del tema
 
     // Make map accessible globally for resize
     window.worldMap = worldMap;
@@ -70,21 +65,21 @@ function countryStyle(feature) {
     const name = feature.properties.name;
     const status = countriesData[name];
 
-    let fillColor = '#dfe6e9'; // Default: light gray
+    let fillColor = '#163a27'; // Default: verd fosc
     let fillOpacity = 0.6;
 
     if (status === 'visited') {
-        fillColor = '#00b894';
+        fillColor = '#27ae60';
         fillOpacity = 0.7;
     } else if (status === 'desired') {
-        fillColor = '#fdcb6e';
+        fillColor = '#f39c12';
         fillOpacity = 0.7;
     }
 
     return {
         fillColor: fillColor,
         fillOpacity: fillOpacity,
-        color: '#b2bec3',
+        color: '#2c6045',
         weight: 1,
         opacity: 0.8
     };
@@ -98,7 +93,7 @@ function onEachCountry(feature, layer) {
             const l = e.target;
             l.setStyle({
                 weight: 2,
-                color: '#636e72',
+                color: '#e8f8f5',
                 fillOpacity: 0.85
             });
             l.bringToFront();
