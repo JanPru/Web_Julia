@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css?v=202610131936">
+    <link rel="stylesheet" href="css/style.css?v=202610131956">
 </head>
 <body>
 
@@ -86,15 +86,36 @@
         <section id="map" class="page">
             <div class="section-header">
                 <h2><i class="fas fa-map-marked-alt"></i> Mapa Mundial</h2>
-                <p>Fes clic en un país per marcar-lo com a visitat o desitjat</p>
+                <button class="btn btn-primary" onclick="openTripModal()">
+                    <i class="fas fa-plus"></i> Nou viatge
+                </button>
             </div>
-            <div class="map-legend">
-                <span class="legend-item"><span class="legend-color" style="background:#27ae60"></span> Visitat</span>
-                <span class="legend-item"><span class="legend-color" style="background:#f39c12"></span> Desitjat</span>
-                <span class="legend-item"><span class="legend-color" style="background:#163a27"></span> No visitat</span>
+
+            <div class="wm-search">
+                <i class="fas fa-search"></i>
+                <input type="search" id="wmSearch" placeholder="Cerca un país..." autocomplete="off">
+                <div class="wm-results" id="wmResults"></div>
             </div>
-            <div class="map-stats" id="mapStats"></div>
-            <div id="world-map"></div>
+
+            <div class="wm-map-wrap">
+                <div id="world-map"></div>
+                <div class="map-legend">
+                    <span class="legend-item"><span class="legend-color" style="background:#27ae60"></span> Visitat</span>
+                    <span class="legend-item"><span class="legend-color" style="background:#f39c12"></span> Desitjat</span>
+                    <span class="legend-item"><span class="legend-color" style="background:#163a27"></span> Pendent</span>
+                </div>
+            </div>
+
+            <div class="wm-trips-head">
+                <h3>Els nostres viatges</h3>
+                <span id="wmTripsCount"></span>
+            </div>
+            <div class="wm-trips" id="wmTrips"></div>
+
+            <div class="wm-trips-head">
+                <h3>Les nostres xifres</h3>
+            </div>
+            <div class="wm-stats" id="mapStats"></div>
         </section>
 
         <!-- ======== RESTAURANTS ======== -->
@@ -225,13 +246,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
     <!-- App Scripts -->
-    <script src="js/firebase-config.js?v=202610131936"></script>
-    <script src="js/app.js?v=202610131936"></script>
-    <script src="js/map.js?v=202610131936"></script>
-    <script src="js/restaurants.js?v=202610131936"></script>
-    <script src="js/movies.js?v=202610131936"></script>
-    <script src="js/plans.js?v=202610131936"></script>
-    <script src="js/hero.js?v=202610131936"></script>
+    <script src="js/firebase-config.js?v=202610131956"></script>
+    <script src="js/app.js?v=202610131956"></script>
+    <script src="js/map.js?v=202610131956"></script>
+    <script src="js/restaurants.js?v=202610131956"></script>
+    <script src="js/movies.js?v=202610131956"></script>
+    <script src="js/plans.js?v=202610131956"></script>
+    <script src="js/hero.js?v=202610131956"></script>
 
 </body>
 </html>

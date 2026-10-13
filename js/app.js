@@ -25,6 +25,7 @@ function navigateTo(page) {
     // Handle map resize when switching to map page
     if (page === 'map' && window.worldMap) {
         setTimeout(() => window.worldMap.invalidateSize(), 200);
+        if (typeof scrollTripsToLatest === 'function') scrollTripsToLatest();
     }
 
     // Update URL hash
